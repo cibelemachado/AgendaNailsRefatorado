@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ServicoDAO {
 
+    // LISTAR SERVIÇOS
     public List<Servico> listarServicos() {
 
         List<Servico> lista = new ArrayList<>();
@@ -52,5 +53,40 @@ public class ServicoDAO {
         }
 
         return lista;
+    }
+
+    // INSERIR SERVIÇO
+    public boolean inserirServico(Servico servico) {
+
+        try {
+
+            Connection conn = Conexao.getConnection();
+
+            String sql =
+                    "INSERT INTO servico (nome, descricao, valor) VALUES (?, ?, ?)";
+
+            PreparedStatement stmt =
+                    conn.prepareStatement(sql);
+
+            stmt.setString(1, servico.getNome());
+            stmt.setString(2, servico.getDescricao());
+            stmt.setDouble(3, servico.getPreco());
+
+            stmt.execute();
+
+            stmt.close();
+            conn.close();
+
+            return true;
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Erro ao inserir serviço: "
+                    + e.getMessage()
+            );
+
+            return false;
+        }
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ProfissionalDAO {
 
+    // LISTAR PROFISSIONAIS
     public List<Profissional> listarProfissionais() {
 
         List<Profissional> lista = new ArrayList<>();
@@ -52,5 +53,40 @@ public class ProfissionalDAO {
         }
 
         return lista;
+    }
+
+    // INSERIR PROFISSIONAL
+    public boolean inserirProfissional(Profissional profissional) {
+
+        try {
+
+            Connection conn = Conexao.getConnection();
+
+            String sql =
+                    "INSERT INTO profissional (nome, especialidade, horario) VALUES (?, ?, ?)";
+
+            PreparedStatement stmt =
+                    conn.prepareStatement(sql);
+
+            stmt.setString(1, profissional.getNome());
+            stmt.setString(2, profissional.getEspecialidade());
+            stmt.setString(3, profissional.getHorario());
+
+            stmt.execute();
+
+            stmt.close();
+            conn.close();
+
+            return true;
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Erro ao inserir profissional: "
+                    + e.getMessage()
+            );
+
+            return false;
+        }
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ClienteDAO {
 
+    // LISTAR CLIENTES
     public List<Cliente> listarClientes() {
 
         List<Cliente> lista = new ArrayList<>();
@@ -50,5 +51,39 @@ public class ClienteDAO {
         }
 
         return lista;
+    }
+
+    // INSERIR CLIENTE
+    public boolean inserirCliente(Cliente cliente) {
+
+        try {
+
+            Connection conn = Conexao.getConnection();
+
+            String sql =
+                    "INSERT INTO cliente (nome, telefone) VALUES (?, ?)";
+
+            PreparedStatement stmt =
+                    conn.prepareStatement(sql);
+
+            stmt.setString(1, cliente.getNome());
+            stmt.setString(2, cliente.getTelefone());
+
+            stmt.execute();
+
+            stmt.close();
+            conn.close();
+
+            return true;
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Erro ao inserir cliente: "
+                    + e.getMessage()
+            );
+
+            return false;
+        }
     }
 }
